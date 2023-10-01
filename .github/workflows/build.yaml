@@ -45,6 +45,5 @@ jobs:
               env:
                 TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
               run: |
-                cat ~/.terraformrc
                 doppler run terraform init
                 doppler run --command "terraform plan"
