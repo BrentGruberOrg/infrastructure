@@ -45,18 +45,11 @@ jobs:
               uses: hashicorp/setup-terraform@v2
               with:
                 cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
-
-            - name: Write keys
-              working-directory: ./oracle
-              run: |
-                doppler run --command "./scripts/write_keys.sh"
-
             
             - name: Run Terraform
               working-directory: ./oracle
               env:
                 TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
               run: |
-                cat ./id_rsa.pem
                 doppler run terraform init
                 doppler run --command "terraform plan"
