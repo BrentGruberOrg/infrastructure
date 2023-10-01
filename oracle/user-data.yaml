@@ -7,6 +7,7 @@ runcmd:
  - "/snap/bin/microk8s.start"
  - "/snap/bin/microk8s.status --wait-ready"
  - "iptables -P FORWARD ACCEPT"
+ - "echo test > /home/ubuntu/test.txt"
 
 write_files:
   - content: |
