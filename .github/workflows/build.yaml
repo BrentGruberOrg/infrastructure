@@ -32,8 +32,7 @@ jobs:
               env:
                 DOPPLER_ACESS_TOKEN: ${{ secrets.DOPPLER_ACCESS_TOKEN }}
               run: |
-                echo $DOPPLER_ACCESS_TOKEN
-                doppler setup --no-interactive -t $DOPPLER_ACCESS_TOKEN
+                printenv
             
             - name: Install Terraform CLI
               uses: hashicorp/setup-terraform@v2
