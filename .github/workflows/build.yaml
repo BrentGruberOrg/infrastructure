@@ -44,5 +44,5 @@ jobs:
             - name: Run Terraform
               working-directory: ./oracle
               run: |
-                terraform init
+                doppler run terraform init
                 doppler run --command "terraform plan"
