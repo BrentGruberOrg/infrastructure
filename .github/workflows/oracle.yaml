@@ -3,8 +3,14 @@ name: Build infra
 on:
     pull_request:
         branches: [main]
+        paths:
+            - 'oracle/**'
+            - '.github/workflows/oracle.yaml'
     push:
         branches: [main]
+        paths:
+          - 'oracle/**'
+          - '.github/workflows/oracle.yaml'
 
 env:
     HOME: ./temp_home
@@ -39,6 +45,13 @@ jobs:
               uses: hashicorp/setup-terraform@v2
               with:
                 cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+
+            - name: Write keys
+              working-directory: ./oracle
+              run: |
+                doppler run --command "echo $DEFAULT_SSH_KEY > id_rsa.pub"
+                doppler run --command "echo $TF_VAR_PRIVATE_KEY > id_rsa.pem"
+
             
             - name: Run Terraform
               working-directory: ./oracle
