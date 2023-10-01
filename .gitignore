@@ -37,3 +37,4 @@ terraform.rc
 
 
 id_rsa*
+terraform.log
