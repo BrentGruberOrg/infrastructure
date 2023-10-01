@@ -1,0 +1,3 @@
+setup:
+  project: infrastructure
+  config: linux_oracle

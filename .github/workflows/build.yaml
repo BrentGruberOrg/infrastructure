@@ -1,0 +1,43 @@
+name: Build infra
+
+on:
+    pull_request:
+        branches: [main]
+    push:
+        branches: [main]
+
+env:
+    HOME: ./temp_home
+
+jobs:
+    build:
+        name: Build infrastructure
+        runs-on: [ubuntu]
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+              with:
+                path: ${{ env.SRC_PREFIX }}
+        
+            - name: Install Doppler CLI
+              uses: dopplerhq/cli-action@v2
+
+            - name: Setup Doppler
+              working-directory: ./oracle
+              env:
+                CLUSTER_DOPPLER_ACESS_TOKEN: ${{ secrets.CLUSTER_DOPPLER_ACCESS_TOKEN }}
+              run: |
+                doppler -t $CLUSTER_DOPPLER_ACCESS_TOKEN setup --no-interactive
+            
+            - name: Install Terraform CLI
+              uses: hashicorp/setup-terraform@v2
+              with:
+                    terraform_version: 1.4.5
+                    cli_config_credentials_token: ${{ secrets.TF_API_TOKEN }}
+            
+            - name: Run Terraform
+              working-directory: ./oracle
+              run: |
+                terraform init
+                doppler run --command "terraform plan"

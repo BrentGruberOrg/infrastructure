@@ -1,0 +1,16 @@
+#cloud-config
+runcmd:
+ - "snap install microk8s --classic"
+ - "echo '-H tcp://0.0.0.0' >> /var/snap/microk8s/current/args/dockerd"
+ - "systemctl restart snap.microk8s.daemon-docker.service"
+ - "ln -s /var/snap/microk8s/current/docker.sock /var/run/docker.sock"
+ - "/snap/bin/microk8s.start"
+ - "/snap/bin/microk8s.status --wait-ready"
+ - "iptables -P FORWARD ACCEPT"
+
+write_files:
+  - content: |
+      #!/bin/sh
+      iptables -P FORWARD ACCEPT
+    path: /etc/rc.local
+    permissions: '0755'
