@@ -3,5 +3,5 @@ provider "oci" {
     user_ocid = var.USER_OCID
     fingerprint = var.FINGERPRINT
     region = var.REGION
-    private_key_path = "./id_rsa.pem"
+    private_key = var.PRIVATE_KEY
 }

@@ -144,7 +144,7 @@ resource "oci_core_instance" "this" {
   preserve_boot_volume = false
 
   metadata = {
-    ssh_authorized_keys = file("./id_rsa.pub")
+    ssh_authorized_keys = var.SSH_KEY
     user_data = filebase64("./user-data.yaml")
   }
 

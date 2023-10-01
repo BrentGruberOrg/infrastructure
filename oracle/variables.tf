@@ -33,6 +33,16 @@ variable "REGION" {
     default     = "us-chicago-1"
 }
 
+variable "PRIVATE_KEY" {
+    description = "OCI Private key"
+    type        = string
+}
+
+variable "SSH_KEY" {
+    description = "SSH Key for instance"
+    type        = string
+}
+
 variable "name" {
   description = "Display name for resources"
   type        = string
