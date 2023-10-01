@@ -30,9 +30,9 @@ jobs:
             - name: Setup Doppler
               working-directory: ./oracle
               env:
-                CLUSTER_DOPPLER_ACESS_TOKEN: ${{ secrets.CLUSTER_DOPPLER_ACCESS_TOKEN }}
+                DOPPLER_ACESS_TOKEN: ${{ secrets.DOPPLER_ACCESS_TOKEN }}
               run: |
-                doppler -t $CLUSTER_DOPPLER_ACCESS_TOKEN setup --no-interactive
+                doppler -t $DOPPLER_ACCESS_TOKEN setup --no-interactive
             
             - name: Install Terraform CLI
               uses: hashicorp/setup-terraform@v2
