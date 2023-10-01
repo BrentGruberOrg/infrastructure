@@ -49,8 +49,7 @@ jobs:
             - name: Write keys
               working-directory: ./oracle
               run: |
-                doppler run --command "echo $DEFAULT_SSH_KEY > id_rsa.pub"
-                doppler run --command "echo $TF_VAR_PRIVATE_KEY > id_rsa.pem"
+                doppler run --command "./scripts/write_keys.sh"
 
             
             - name: Run Terraform
