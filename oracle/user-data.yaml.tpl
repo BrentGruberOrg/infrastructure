@@ -79,7 +79,6 @@ runcmd:
    echo ${doppler_token} | sudo doppler configure set token --scope /
    cat /root/.doppler/.doppler.yaml
    doppler setup
-   tailscale up --authkey ${tailscale_token}
    cat > /lib/systemd/system/tailscale.service <<'EOF'
    [Unit]
    Description=Tailscale client
@@ -90,7 +89,7 @@ runcmd:
    User=root
    Group=root
    Type=simple
-   ExecStart=doppler run --command 'sudo /usr/bin/tailscale up -authkey ${tailscale_token}'
+   ExecStart=doppler run --command 'sudo /usr/bin/tailscale up -authkey $TAILSCALE_TOKEN'
    Restart=on-failure
 
    [Install]
