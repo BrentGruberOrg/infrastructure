@@ -153,7 +153,10 @@ resource "oci_core_instance" "this" {
 
   metadata = {
     ssh_authorized_keys = var.SSH_KEY
-    user_data = base64encode(data.template_file.user_data)
+    user_data = base64encode(templatefile("./user-data.yml.tpl", {
+        tailscale_token = var.TAILSCALE_TOKEN
+        doppler_token = var.DOPPLER_TOKEN
+    }))
   }
 
   agent_config {
