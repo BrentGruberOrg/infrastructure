@@ -20,6 +20,14 @@ locals {
     )
 }
 
+data "template_file" "user_data" {
+    template = "${file("$path.module)/user-data.yaml.tpl")}"
+    vars = {
+        tailscale_token = var.tailscale_token
+        doppler_token = var.doppler_token
+    }
+}
+
 resource "oci_identity_compartment" "this" {
   compartment_id = var.TENANCY_OCID
   description    = var.name
@@ -145,7 +153,7 @@ resource "oci_core_instance" "this" {
 
   metadata = {
     ssh_authorized_keys = var.SSH_KEY
-    user_data = filebase64("./user-data.yaml")
+    user_data = base64encode(data.user_data)
   }
 
   agent_config {
