@@ -153,7 +153,7 @@ resource "oci_core_instance" "this" {
 
   metadata = {
     ssh_authorized_keys = var.SSH_KEY
-    user_data = base64encode(data.user_data)
+    user_data = base64encode(data.template_file.user_data)
   }
 
   agent_config {
