@@ -43,11 +43,22 @@ variable "SSH_KEY" {
     type        = string
 }
 
+variable "DOPPLER_TOKEN" {
+    description = "Doppler token to use in provisioned os"
+    type        = string
+}
+
+variable "TAILSCALE_TOKEN" {
+    description = "Tailscale token to use in provisioned os"
+    type        = string
+}
+
 variable "name" {
   description = "Display name for resources"
   type        = string
   default     = "OCI Free Compute Maximal"
 }
+
 
 variable "cidr_block" {
   description = "CIDR block of the VCN"

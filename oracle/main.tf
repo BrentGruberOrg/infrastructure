@@ -23,8 +23,8 @@ locals {
 data "template_file" "user_data" {
     template = "${file("$path.module)/user-data.yaml.tpl")}"
     vars = {
-        tailscale_token = var.tailscale_token
-        doppler_token = var.doppler_token
+        tailscale_token = var.TAILSCALE_TOKEN
+        doppler_token = var.DOPPLER_TOKEN
     }
 }
 
