@@ -68,14 +68,6 @@ packages:
   - doppler
 runcmd:
  - |
-   snap install microk8s --classic
-   echo '-H tcp://0.0.0.0' >> /var/snap/microk8s/current/args/dockerd
-   systemctl restart snap.microk8s.daemon-docker.service
-   ln -s /var/snap/microk8s/current/docker.sock /var/run/docker.sock
-   /snap/bin/microk8s.start
-   /snap/bin/microk8s.status --wait-ready
-   iptables -P FORWARD ACCEPT
-   usermod -a -G microk8s ubuntu
    echo ${doppler_token} | sudo doppler configure set token --scope /
    cat /root/.doppler/.doppler.yaml
    doppler setup
@@ -99,9 +91,17 @@ runcmd:
    systemctl enable tailscale.service
    systemctl start tailscale.service
 
+   curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik --secrets-encryption" sh -s -
+   kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/argo/argocd?ref=main'
+   kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/apps/profiles/tools?ref=main'
+
+   wget https://github.com/BrentGruberOrg/doppler-secrets-bootstrap/raw/main/doppler-bootstrap-arm64
+   doppler run ./doppler-bootstrap-arm64
+
 write_files:
   - content: |
       #!/bin/sh
       iptables -P FORWARD ACCEPT
     path: /etc/rc.local
     permissions: '0755'
+  - content: |
