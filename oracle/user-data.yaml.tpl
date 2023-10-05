@@ -96,6 +96,8 @@ runcmd:
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/apps/profiles/tools?ref=main'
 
    wget https://github.com/BrentGruberOrg/doppler-secrets-bootstrap/raw/main/doppler-bootstrap-arm64
+   chmod +x ./doppler-bootstrap-arm64
+   cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
    doppler run ./doppler-bootstrap-arm64
 
 write_files:
@@ -104,4 +106,3 @@ write_files:
       iptables -P FORWARD ACCEPT
     path: /etc/rc.local
     permissions: '0755'
-  - content: |
