@@ -97,9 +97,12 @@ runcmd:
 
    wget https://github.com/BrentGruberOrg/doppler-secrets-bootstrap/raw/main/doppler-bootstrap-arm64
    chmod +x ./doppler-bootstrap-arm64
-   cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
+   mkdir /root/.kube && cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
    HOME=/root doppler run ./doppler-bootstrap-arm64
 
+   CA=$(kubectl -n ingress-nginx get secret ingress-nginx-admission -ojsonpath='{.data.ca}') kubectl patch validatingwebhookconfigurations ingress-nginx-admission -n ingress-nginx --type='json' -p='[{"op": "add", "path": "/webhooks/0/clientConfig/caBundle", "value":"'$CA'"}]'
+# https://fabianlee.org/2022/01/29/nginx-ingress-nginx-controller-admission-error-x509-certificate-signed-by-unknown-authority/
+  
 write_files:
   - content: |
       #!/bin/sh
