@@ -120,5 +120,7 @@ write_files:
         echo "waiting for $1 namespace to be created"
         sleep 30
       done
+
+      echo "namespace found"
     path: /home/ubuntu/wait-for.sh
     permission: '0755'
