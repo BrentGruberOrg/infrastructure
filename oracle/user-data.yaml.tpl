@@ -115,11 +115,13 @@ write_files:
     path: /etc/rc.local
     permissions: '0755'
   - content: |
-      #!/bin/sh
-      until [ $(kubectl get ns --no-headers -o custom-columns=":metadata.name") == *"$1"* ];
+      #!/bin/bash
+      result=$(kubectl get ns --no-headers -o custom-columns=":metadata.name")
+      until [[ $result  == *"$1"* ]];
       do
         echo "waiting for $1 namespace to be created"
         sleep 30
+        result=$(kubectl get ns --no-headers -o custom-columns=":metadata.name")
       done
 
       echo "namespace found"
