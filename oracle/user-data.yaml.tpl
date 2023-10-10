@@ -95,12 +95,23 @@ runcmd:
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/argo/argocd?ref=main'
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/apps/profiles/tools?ref=main'
 
-   sleep 180
+   until [$(kubectl get ns -o custom-columns=".metadata.name" | grep doppler-operator-system) == "doppler-operator-system"]
+   do
+    echo "waiting for doppler namespace to be created"
+    sleep 10
+   done
+    
 
    wget https://github.com/BrentGruberOrg/doppler-secrets-bootstrap/raw/main/doppler-bootstrap-arm64
    chmod +x ./doppler-bootstrap-arm64
    mkdir /root/.kube && cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
    HOME=/root doppler run ./doppler-bootstrap-arm64
+
+   until [$(kubectl get ns -o custom-columns=".metadata.name" | grep ingress-nginx) == "ingress-nginx"]
+   do
+    echo "waiting for nginx namespace to be created"
+    sleep 10
+   done
 
    CA=$(kubectl -n ingress-nginx get secret ingress-nginx-admission -ojsonpath='{.data.ca}') kubectl patch validatingwebhookconfigurations ingress-nginx-admission -n ingress-nginx --type='json' -p='[{"op": "add", "path": "/webhooks/0/clientConfig/caBundle", "value":"'$CA'"}]'
 # https://fabianlee.org/2022/01/29/nginx-ingress-nginx-controller-admission-error-x509-certificate-signed-by-unknown-authority/
