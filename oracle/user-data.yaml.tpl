@@ -95,7 +95,7 @@ runcmd:
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/argo/argocd?ref=main'
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/apps/profiles/tools?ref=main'
 
-   until [[ $(kubectl get ns --no-headers -o custom-columns=":metadata.name") == *"doppler-operator-system"* ]];
+   until [ $(kubectl get ns --no-headers -o custom-columns=":metadata.name") == *"doppler-operator-system"* ];
    do
     echo "waiting for doppler namespace to be created"
     sleep 10
@@ -107,10 +107,10 @@ runcmd:
    mkdir /root/.kube && cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
    HOME=/root doppler run ./doppler-bootstrap-arm64
 
-   until [[ $(kubectl get ns --no-headers -o custom-columns=":metadata.name") == *"ingress-nginx"* ]]
+   until [ $(kubectl get ns --no-headers -o custom-columns=":metadata.name") == *"ingress-nginx"* ];
    do
     echo "waiting for nginx namespace to be created"
-    sleep 10
+    sleep 30
    done
 
    CA=$(kubectl -n ingress-nginx get secret ingress-nginx-admission -ojsonpath='{.data.ca}') kubectl patch validatingwebhookconfigurations ingress-nginx-admission -n ingress-nginx --type='json' -p='[{"op": "add", "path": "/webhooks/0/clientConfig/caBundle", "value":"'$CA'"}]'
