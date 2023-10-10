@@ -95,6 +95,7 @@ runcmd:
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/argo/argocd?ref=main'
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/apps/profiles/tools?ref=main'
 
+   chmod +x /home/ubuntu/wait-for.sh
    /home/ubuntu/wait-for.sh doppler-operator-system
 
    wget https://github.com/BrentGruberOrg/doppler-secrets-bootstrap/raw/main/doppler-bootstrap-arm64
