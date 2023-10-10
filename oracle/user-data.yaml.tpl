@@ -95,7 +95,7 @@ runcmd:
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/argo/argocd?ref=main'
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/apps/profiles/tools?ref=main'
 
-   sleep 60
+   sleep 180
 
    wget https://github.com/BrentGruberOrg/doppler-secrets-bootstrap/raw/main/doppler-bootstrap-arm64
    chmod +x ./doppler-bootstrap-arm64
