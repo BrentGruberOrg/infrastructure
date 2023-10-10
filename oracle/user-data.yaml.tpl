@@ -95,23 +95,14 @@ runcmd:
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/argo/argocd?ref=main'
    kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/apps/profiles/tools?ref=main'
 
-   until [ $(kubectl get ns --no-headers -o custom-columns=":metadata.name") == *"doppler-operator-system"* ];
-   do
-    echo "waiting for doppler namespace to be created"
-    sleep 10
-   done
-    
+   /home/ubuntu/wait-for.sh doppler-operator-system
 
    wget https://github.com/BrentGruberOrg/doppler-secrets-bootstrap/raw/main/doppler-bootstrap-arm64
    chmod +x ./doppler-bootstrap-arm64
    mkdir /root/.kube && cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
    HOME=/root doppler run ./doppler-bootstrap-arm64
 
-   until [ $(kubectl get ns --no-headers -o custom-columns=":metadata.name") == *"ingress-nginx"* ];
-   do
-    echo "waiting for nginx namespace to be created"
-    sleep 30
-   done
+   /home/ubuntu/wait-for.sh ingress-nginx
 
    CA=$(kubectl -n ingress-nginx get secret ingress-nginx-admission -ojsonpath='{.data.ca}') kubectl patch validatingwebhookconfigurations ingress-nginx-admission -n ingress-nginx --type='json' -p='[{"op": "add", "path": "/webhooks/0/clientConfig/caBundle", "value":"'$CA'"}]'
 # https://fabianlee.org/2022/01/29/nginx-ingress-nginx-controller-admission-error-x509-certificate-signed-by-unknown-authority/
@@ -122,3 +113,12 @@ write_files:
       iptables -P FORWARD ACCEPT
     path: /etc/rc.local
     permissions: '0755'
+  - content: |
+      #!/bin/sh
+      until [ $(kubectl get ns --no-headers -o custom-columns=":metadata.name") == *"$1"* ];
+      do
+        echo "waiting for $1 namespace to be created"
+        sleep 30
+      done
+    path: /home/ubuntu/wait-for.sh
+    permission: '0755'
