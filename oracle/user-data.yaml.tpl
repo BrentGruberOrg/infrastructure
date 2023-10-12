@@ -100,10 +100,12 @@ runcmd:
 
    wget https://github.com/BrentGruberOrg/doppler-secrets-bootstrap/raw/main/doppler-bootstrap-arm64
    chmod +x ./doppler-bootstrap-arm64
-   mkdir /root/.kube && cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
+   mkdir -p /root/.kube && cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
    HOME=/root doppler run ./doppler-bootstrap-arm64
 
    /home/ubuntu/wait-for.sh ingress-nginx
+
+   sleep 120
 
    echo "Updating signing certificate for validating webhook"
 
