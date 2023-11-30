@@ -131,3 +131,4 @@ write_files:
       echo "namespace found"
     path: /home/ubuntu/wait-for.sh
     permission: '0755'
+
