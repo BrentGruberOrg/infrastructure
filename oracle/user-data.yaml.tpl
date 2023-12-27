@@ -1,4 +1,5 @@
 #cloud-config
+#homelab
 apt:
   sources:
     tailscale.list:
