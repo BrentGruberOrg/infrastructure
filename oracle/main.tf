@@ -185,7 +185,7 @@ resource "oci_core_instance" "this" {
   source_details {
     source_id               = "ocid1.image.oc1.us-chicago-1.aaaaaaaa7utrjlc7yddvcdqwrzfpkq5ojw5umocqwbnczjmjqojwcakkqerq" # Hardcoding for now
     source_type             = "image"
-    boot_volume_size_in_gbs = 100
+    boot_volume_size_in_gbs = 200
   }
 
   lifecycle {
