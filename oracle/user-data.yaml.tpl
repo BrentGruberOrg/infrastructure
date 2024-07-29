@@ -92,25 +92,25 @@ runcmd:
    systemctl enable tailscale.service
    systemctl start tailscale.service
 
-   curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik --secrets-encryption" sh -s -
-   kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/argo/argocd?ref=main'
-   kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/apps/profiles/tools?ref=main'
+   #curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="--disable=traefik --secrets-encryption" sh -s -
+   #kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/argo/argocd?ref=main'
+   #kubectl apply -k 'github.com/BrentGruberOrg/tools-deploy/apps/profiles/tools?ref=main'
 
-   chmod +x /home/ubuntu/wait-for.sh
-   /home/ubuntu/wait-for.sh doppler-operator-system
+   #chmod +x /home/ubuntu/wait-for.sh
+   #/home/ubuntu/wait-for.sh doppler-operator-system
 
-   wget https://github.com/BrentGruberOrg/doppler-secrets-bootstrap/raw/main/doppler-bootstrap-arm64
-   chmod +x ./doppler-bootstrap-arm64
-   mkdir -p /root/.kube && cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
-   HOME=/root doppler run ./doppler-bootstrap-arm64
+   #wget https://github.com/BrentGruberOrg/doppler-secrets-bootstrap/raw/main/doppler-bootstrap-arm64
+   #chmod +x ./doppler-bootstrap-arm64
+   #mkdir -p /root/.kube && cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
+   #HOME=/root doppler run ./doppler-bootstrap-arm64
 
-   /home/ubuntu/wait-for.sh ingress-nginx
+   #/home/ubuntu/wait-for.sh ingress-nginx
 
-   sleep 120
+   #sleep 120
 
-   echo "Updating signing certificate for validating webhook"
+   #echo "Updating signing certificate for validating webhook"
 
-   CA=$(kubectl -n ingress-nginx get secret ingress-nginx-admission -ojsonpath='{.data.ca}') kubectl patch validatingwebhookconfigurations ingress-nginx-admission -n ingress-nginx --type='json' -p='[{"op": "add", "path": "/webhooks/0/clientConfig/caBundle", "value":"'$CA'"}]'
+   #CA=$(kubectl -n ingress-nginx get secret ingress-nginx-admission -ojsonpath='{.data.ca}') kubectl patch validatingwebhookconfigurations ingress-nginx-admission -n ingress-nginx --type='json' -p='[{"op": "add", "path": "/webhooks/0/clientConfig/caBundle", "value":"'$CA'"}]'
 # https://fabianlee.org/2022/01/29/nginx-ingress-nginx-controller-admission-error-x509-certificate-signed-by-unknown-authority/
   
 write_files:
