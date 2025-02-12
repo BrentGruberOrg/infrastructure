@@ -7,7 +7,7 @@ keep_running="run"
 
 while [ "$keep_running" = "run" ]
 do
-    doppler run --command "terraform apply -auto-approve" | tee terraform.log
+    doppler run --command "terraform destroy -auto-approve" | tee terraform.log
 
     # if 'Out of host capacity' is not in the log, then stop running
     if ! grep -q 'Out of host capacity' terraform.log; then
